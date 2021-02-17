@@ -31,5 +31,8 @@ module PollApp
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.middleware.use ActionDispatch::Cookies    
+    config.middleware.use ActionDispatch::Session::CookieStore
+    config.api_only = false
   end
 end
