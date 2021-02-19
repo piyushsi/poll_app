@@ -16,7 +16,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    Axios.post("/logout").then(res=>console.log(res))
+    Axios.post("/logout")
     setIsLoggedIn(false);
     setUser({});
   };
