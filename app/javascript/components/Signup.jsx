@@ -28,7 +28,7 @@ export default function Signup(props) {
       .then((response) => {
         console.log(response);
         if (response.data.status === "created") {
-          handleLogin(response.data.user);
+          handleLogin(response.data);
           redirect();
         } else {
           setErrors(response.data.errors);
