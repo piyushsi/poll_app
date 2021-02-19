@@ -39,17 +39,7 @@ export default function Login(props) {
     history.push("/");
   };
 
-  const handleErrors = () => {
-    return (
-      <div>
-        <ul>
-          {errors.map((error) => {
-            return <li key={error}>{error}</li>;
-          })}
-        </ul>
-      </div>
-    );
-  };
+  
 
   return (
     <div>
@@ -77,6 +67,17 @@ export default function Login(props) {
           or <Link to="/signup">sign up</Link>
         </div>
       </form>
+      {errors ? (
+        <div>
+          <ul>
+            {errors.map((error) => {
+              return <li key={error}>{error}</li>;
+            })}
+          </ul>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

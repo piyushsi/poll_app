@@ -12,17 +12,22 @@ export default function App() {
   const handleLogin = (data) => {
     setIsLoggedIn(true);
     setUser(data.user);
+    // localStorage.setItem("user", JSON.stringify(data.user));
   };
+
   const handleLogout = () => {
+    Axios.post("/logout").then(res=>console.log(res))
     setIsLoggedIn(false);
     setUser({});
   };
 
   const loginStatus = () => {
-    Axios.get("/logged_in", { withCredentials: true })
+    Axios.post("/logged_in", {
+      withCredentials: true,
+    })
       .then((response) => {
         if (response.data.logged_in) {
-          handleLogin(response);
+          handleLogin(response.data);
         } else {
           handleLogout();
         }
@@ -33,8 +38,8 @@ export default function App() {
     loginStatus();
   }, []);
 
-  const data = { handleLogin, handleLogout, user };
-  console.log(user)
+  const data = { handleLogin, handleLogout, user, isLoggedIn };
+  console.log(user);
   return (
     <Router>
       <Switch>
@@ -43,12 +48,12 @@ export default function App() {
           path="/"
           render={(props) => <Home {...props} {...data} />}
         />
-         <Route
+        <Route
           exact
           path="/login"
           render={(props) => <Login {...props} {...data} />}
         />
-         <Route
+        <Route
           exact
           path="/signup"
           render={(props) => <Signup {...props} {...data} />}

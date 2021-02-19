@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 
 export default function Home(props) {
-  const { user } = props;
+  const { user, isLoggedIn, handleLogout } = props;
   return (
     <div>
       <h1>Poll App</h1>
-
-      <Link to="/login">Log In</Link>
-      <br></br>
-      <Link to="/signup">Sign Up</Link>
+      {isLoggedIn ? (
+        <button onClick={() => handleLogout()}>Logout</button>
+      ) : (
+        <div>
+          <Link to="/login">Log In</Link>
+          <br></br>
+          <Link to="/signup">Sign Up</Link>
+        </div>
+      )}
+      <br />
     </div>
   );
 }
