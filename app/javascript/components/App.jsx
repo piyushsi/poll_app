@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "../components/Home";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
+import Poll from '../components/Poll'
+import SinglePoll from '../components/SinglePoll'
 import Axios from "axios";
 
 export default function App() {
@@ -47,6 +49,16 @@ export default function App() {
           exact
           path="/"
           render={(props) => <Home {...props} {...data} />}
+        />
+        <Route
+          exact
+          path="/poll"
+          render={(props) => <Poll {...props} {...data} />}
+        />
+        <Route
+          exact
+          path="/poll/*"
+          render={(props) => <SinglePoll {...props} {...data} />}
         />
         <Route
           exact
