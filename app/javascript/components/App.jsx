@@ -6,6 +6,7 @@ import Signup from "../components/Signup";
 import Poll from '../components/Poll'
 import SinglePoll from '../components/SinglePoll'
 import Axios from "axios";
+import '../css/application.css'
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
