@@ -16,28 +16,29 @@ export default function Home(props) {
   useEffect(() => getAllPoll(), []);
   return (
     <div>
-      <h1>Poll App</h1>
-      {isLoggedIn ? (
-        <button onClick={() => handleLogout()}>Logout</button>
-      ) : (
-        <div>
-          <Link to="/login">Log In</Link>
-          <br></br>
-          <Link to="/signup">Sign Up</Link>
+      <div className="bg-indigo-100 py-6 md:py-12">
+        <div className="container px-4 mx-auto">
+
+          <div className="text-center max-w-2xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-medium mb-2">Poll app.</h1>
+
+            <br />
+            <h2>All Poll</h2>
+            <ul>
+              {allPoll?.map((a) => {
+                return (
+                  <>
+                    <li>{a.question}</li>
+                    <Link to={`/poll/${a.id}`}>open</Link>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+
         </div>
-      )}
-      <br />
-      <h2>All Poll</h2>
-      <ul>
-        {allPoll?.map((a) => {
-          return (
-            <>
-              <li>{a.question}</li>
-              <Link to={`/poll/${a.id}`}>open</Link>
-            </>
-          );
-        })}
-      </ul>
+      </div>
+
     </div>
   );
 }

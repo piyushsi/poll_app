@@ -7,6 +7,7 @@ import Poll from '../components/Poll'
 import SinglePoll from '../components/SinglePoll'
 import Axios from "axios";
 import '../css/application.css'
+import Header from './Header'
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,6 +46,7 @@ export default function App() {
   console.log(user);
   return (
     <Router>
+      <Header {...data} />
       <Switch>
         <Route
           exact
