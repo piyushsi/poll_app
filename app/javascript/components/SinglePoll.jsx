@@ -21,6 +21,7 @@ export default function SinglePoll(props) {
       .catch((error) => console.log("api errors:", error));
 
   }
+  console.log(data)
 
   return (
     <div>

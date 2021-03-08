@@ -2,14 +2,14 @@ class VotesController < ApplicationController
   before_action :logged_in?
   def create
     @poll = Poll.find(params[:vote][:poll_id])
-
-    unless has_user_voted?(@poll)
+    @vote = Vote.find_by( poll_id: @poll.id)
+    
+    unless has_user_voted?(@vote)
       params[:vote][:users_id] = current_user.id
-      puts (vote_params)
       @vote = Vote.new(vote_params)
 
       if @vote.save
-        @option = @poll.options.detect{ |option| option.id == @vote.option_id}
+        @option = @poll.options.detect{ |option| option.id == @vote.options_id}
         @option.increment!(:vote_count)
         render status: :ok, json: { notice: "You have voted successfully" }
       else
@@ -20,8 +20,8 @@ class VotesController < ApplicationController
 
 
   private
-  def has_user_voted?(poll)
-    poll.users_id && poll.users_id.include?(current_user.id)
+  def has_user_voted?(vote)
+    vote && vote.users_id == current_user.id
   end
 
   def vote_params
