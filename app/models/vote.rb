@@ -1,5 +1,5 @@
 class Vote < ApplicationRecord
   belongs_to :poll
-  belongs_to :users
-  belongs_to :options
+  belongs_to :user
+  belongs_to :option
 end

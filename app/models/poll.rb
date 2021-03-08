@@ -1,5 +1,4 @@
 class Poll < ApplicationRecord
-  has_many :voters, through: :votes, source: :user
   has_many :options, dependent: :destroy
   has_many :votes, dependent: :destroy
   belongs_to :user
