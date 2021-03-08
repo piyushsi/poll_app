@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post "/poll", to: "polls#create"
   post "/poll_list", to: "polls#index"
   post "/single_poll/:id", to: "polls#show"
+  post "/votes", to: "votes#create"
+
   
   resources :users, only: [:create, :show, :index] do
     resources :items, only: [:create, :show, :index, :destroy]
