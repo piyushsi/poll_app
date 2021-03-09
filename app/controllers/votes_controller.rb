@@ -2,8 +2,7 @@ class VotesController < ApplicationController
   before_action :logged_in?
   def create
     @poll = Poll.find(params[:vote][:poll_id])
-    @vote = Vote.find_by( poll_id: @poll.id)
-    
+    @vote = Vote.find_by( poll_id: @poll.id,users_id:current_user.id)
     unless has_user_voted?(@vote)
       params[:vote][:users_id] = current_user.id
       @vote = Vote.new(vote_params)
@@ -21,7 +20,7 @@ class VotesController < ApplicationController
 
   private
   def has_user_voted?(vote)
-    vote && vote.users_id == current_user.id
+    vote
   end
 
   def vote_params
