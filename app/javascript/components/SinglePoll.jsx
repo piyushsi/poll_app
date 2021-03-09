@@ -1,27 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import { Link, useHistory } from "react-router-dom";
+
 export default function SinglePoll(props) {
+  const history = useHistory();
   const { user, isLoggedIn, handleLogout } = props;
   const id = +props.match.params[0];
   const [data, setData] = useState(null);
+  const [showVotes, setShowVotes] = useState(false)
+
   useEffect(() => {
+    showVote();
+  }, []);
+
+  const showVote = () => {
     Axios.post(`/single_poll/${id}`)
       .then((response) => {
         setData(response.data);
       })
       .catch((error) => console.log("api errors:", error));
-  }, []);
-
-  const handleVotes = (payload) => {
-    console.log(payload)
-    Axios.post(`/votes`, payload)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => console.log("api errors:", error));
-
+    Axios.post('/isvoted', { poll_id: id }).then(response => {
+      setShowVotes(response.data.success)
+    })
   }
 
+  const handleVotes = (payload) => {
+    user.id ?
+      Axios.post(`/votes`, payload)
+        .then((response) => {
+          showVote();
+        })
+        .catch((error) => console.log("api errors:", error)) : history.push("/signup");
+
+  }
+  const totalVotesPercentage = (x) => {
+    return x / data?.options.reduce((a, b) => {
+      return a += b.vote_count
+    }, 0) * 100
+  }
+
+  console.log(user)
   return (
     <div>
       <div className="bg-indigo-100 py-6 md:py-12">
@@ -35,11 +53,12 @@ export default function SinglePoll(props) {
 
               <ul class="w-full rounded-lg mt-2 mb-3 text-blue-800">
                 {data?.options.map((a) => {
+                  console.log(totalVotesPercentage(a.vote_count))
                   return (
                     <>
-                      <li onClick={() => handleVotes({ vote: { poll_id: data.poll.id, options_id: a.id, } })} class="mb-1">
-                        <a href='#' class="w-fill flex p-3 pl-3 bg-gray-100 hover:bg-gray-200 rounded-lg">
-                          <span class="ml-2 truncate" title={a.name}>{a.name}</span>
+                      <li class="mb-1" >
+                        <a style={{ position: 'relative' }} href='#' class="w-fill flex p-3 pl-3 bg-gray-100 hover:bg-gray-200 rounded-lg" title={a.name}>{a.name}
+                          {showVotes ? <span style={{ width: totalVotesPercentage(a.vote_count), backgroundColor: 'lightgreen', position: 'relative' }} class="ml-2 truncate"> </span> : <span style={{ backgroundColor: 'lightgreen', position: 'absolute', right: 0 }} onClick={() => handleVotes({ vote: { poll_id: data.poll.id, options_id: a.id, } })} class="ml-2 truncate">Vote </span>}
                         </a>
                       </li>
 
