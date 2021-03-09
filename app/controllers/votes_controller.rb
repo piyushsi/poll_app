@@ -17,6 +17,15 @@ class VotesController < ApplicationController
     end
   end
 
+  def check
+    @vote = Vote.find_by( poll_id: params[:poll_id],users_id:current_user.id)
+    if @vote
+      render status: :ok, json: { success: true }
+    else
+      render status: :ok, json: { success: false }
+    end
+  end
+
 
   private
   def has_user_voted?(vote)
