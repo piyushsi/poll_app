@@ -7,6 +7,7 @@ class PollsController < ApplicationController
 
   def create
     params[:poll][:user_id] = current_user.id
+    params[:poll][:users_id]= current_user.id
     puts poll_params
     @poll = Poll.new(poll_params)
     if @poll.save
