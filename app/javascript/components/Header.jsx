@@ -7,7 +7,7 @@ export default function Header(props) {
         <div className="container px-4 mx-auto md:flex md:items-center">
 
             <div className="flex justify-between items-center">
-                <a href="#" className="font-bold text-xl text-indigo-600">Poll App</a>
+                <Link to="/" className="font-bold text-xl text-indigo-600">Poll App</Link>
                 <button className="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden" id="navbar-toggle">
                     <i className="fas fa-bars"></i>
                 </button>
