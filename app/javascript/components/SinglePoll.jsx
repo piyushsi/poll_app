@@ -8,6 +8,7 @@ export default function SinglePoll(props) {
   const id = +props.match.params[0];
   const [data, setData] = useState(null);
   const [showVotes, setShowVotes] = useState(false)
+  const [loading, setLoader] = useState(false)
 
   useEffect(() => {
     showVote();
@@ -17,11 +18,12 @@ export default function SinglePoll(props) {
     Axios.post(`/single_poll/${id}`)
       .then((response) => {
         setData(response.data);
+        Axios.post('/isvoted', { poll_id: id }).then(response => {
+          setShowVotes(response.data.success)
+        })
       })
       .catch((error) => console.log("api errors:", error));
-    Axios.post('/isvoted', { poll_id: id }).then(response => {
-      setShowVotes(response.data.success)
-    })
+
   }
 
   const handleVotes = (payload) => {
@@ -57,7 +59,7 @@ export default function SinglePoll(props) {
                   return (
                     <>
                       <li class="mb-1" >
-                        <a style={{ position: 'relative' }} href='#' class="w-fill flex p-3 pl-3 bg-gray-100 hover:bg-gray-200 rounded-lg" title={a.name}>{a.name}
+                        <a style={{ position: 'relative' }}  class="w-fill flex p-3 pl-3 bg-gray-100 hover:bg-gray-200 rounded-lg" title={a.name}>{a.name}
                           {showVotes ? <span style={{ width: totalVotesPercentage(a.vote_count), backgroundColor: 'lightgreen', position: 'relative' }} class="ml-2 truncate"> </span> : <span style={{ backgroundColor: 'lightgreen', position: 'absolute', right: 0 }} onClick={() => handleVotes({ vote: { poll_id: data.poll.id, options_id: a.id, } })} class="ml-2 truncate">Vote </span>}
                         </a>
                       </li>

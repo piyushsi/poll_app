@@ -4,6 +4,8 @@ import Axios from "axios";
 
 export default function Signup(props) {
   const { handleLogin, handleLogout } = props;
+  const [loading, setLoader] = useState(false)
+
   const history = useHistory();
   const [user, setUser] = useState({
     username: "",
@@ -23,6 +25,7 @@ export default function Signup(props) {
   };
 
   const handleSubmit = (event) => {
+    setLoader(true)
     event.preventDefault();
     Axios.post("/users", { user }, { withCredentials: true })
       .then((response) => {
@@ -33,6 +36,7 @@ export default function Signup(props) {
         } else {
           setErrors(response.data.errors);
         }
+        setLoader(false)
       })
       .catch((error) => console.log("api errors:", error));
   };
@@ -53,34 +57,34 @@ export default function Signup(props) {
                 <div className="mb-5">
                   <label for="username" className="block mb-2 text-sm font-medium text-gray-600">username</label>
 
-                  <input type="text" name="username" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.username}
+                  <input  required type="text" name="username" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.username}
                     onChange={handleChange} />
                 </div>
 
                 <div className="mb-5">
                   <label for="email" className="block mb-2 text-sm font-medium text-gray-600">email</label>
 
-                  <input type="email" name="email" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.email}
+                  <input required type="email" name="email" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.email}
                     onChange={handleChange} />
                 </div>
 
                 <div className="mb-5">
                   <label for="password" className="block mb-2 text-sm font-medium text-gray-600">Password</label>
 
-                  <input type="password" name="password" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password}
+                  <input required  type="password" name="password" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password}
                     onChange={handleChange} />
                 </div>
                 <div className="mb-5">
                   <label for="password" className="block mb-2 text-sm font-medium text-gray-600">Password Confirmation</label>
 
-                  <input type="password" name="password_confirmation" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password_confirmation}
+                  <input required type="password" name="password_confirmation" className="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password_confirmation}
                     onChange={handleChange} />
                 </div>
                 {errors ? (
                   <div>
                     <ul>
                       {errors.map((error) => {
-                        return <li key={error}>{error}</li>;
+                        return <li style={{listStyleType:'circle'}} key={error}>{error}</li>;
                       })}
                     </ul>
                   </div>
@@ -88,7 +92,7 @@ export default function Signup(props) {
                   ""
                 )}
 
-                <button type="submit" className="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Signup</button>
+                {loading ? <div class="loading"></div> : <button type="submit" className="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Signup</button>}
               </div>
 
               <div className="flex justify-between p-8 text-sm border-t border-gray-300 bg-gray-100">

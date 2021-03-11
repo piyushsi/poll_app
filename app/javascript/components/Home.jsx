@@ -5,11 +5,14 @@ import Axios from "axios";
 export default function Home(props) {
   const { user, isLoggedIn, handleLogout } = props;
   const [allPoll, setAllPoll] = useState(null);
+  const [loading, setLoader] = useState(true)
 
   const getAllPoll = () => {
+
     Axios.post("/poll_list")
       .then((response) => {
         setAllPoll(response.data.polls);
+        setLoader(false)
       })
       .catch((error) => console.log("api errors:", error));
   };
@@ -23,8 +26,7 @@ export default function Home(props) {
 
             <div class="m-3">
               <h1 className="text-3xl md:text-4xl font-medium mb-2">All Polls</h1>
-
-              <ul class="w-full rounded-lg mt-2 mb-3 text-blue-800">
+              {loading ? <div class="loading"></div> : <ul class="w-full rounded-lg mt-2 mb-3 text-blue-800">
                 {allPoll?.map((a) => {
                   return (
                     <>
@@ -40,7 +42,7 @@ export default function Home(props) {
                     </>
                   );
                 })}
-              </ul>
+              </ul>}
             </div>
 
           </div>
