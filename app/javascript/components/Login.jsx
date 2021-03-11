@@ -11,6 +11,7 @@ export default function Login(props) {
   });
 
   const [errors, setErrors] = useState("");
+  const [loading, setLoader] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +23,7 @@ export default function Login(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoader(true)
     Axios.post("/login", { user }, { withCredentials: true })
       .then((response) => {
         console.log(response);
@@ -31,6 +33,7 @@ export default function Login(props) {
         } else {
           setErrors(response.data.errors);
         }
+        setLoader(false)
       })
       .catch((error) => console.log("api errors:", error));
   };
@@ -50,21 +53,21 @@ export default function Login(props) {
                 <div class="mb-5">
                   <label for="username" class="block mb-2 text-sm font-medium text-gray-600">username</label>
 
-                  <input type="text" name="username" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.username}
+                  <input required type="text" name="username" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.username}
                     onChange={handleChange} />
                 </div>
 
                 <div class="mb-5">
                   <label for="password" class="block mb-2 text-sm font-medium text-gray-600">Password</label>
 
-                  <input type="password" name="password" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password}
+                  <input required type="password" name="password" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={user.password}
                     onChange={handleChange} />
                 </div>
                 {errors ? (
                   <div>
                     <ul>
                       {errors.map((error) => {
-                        return <li key={error}>{error}</li>;
+                        return <li style={{listStyleType:'circle'}} key={error}>{error}</li>;
                       })}
                     </ul>
                   </div>
@@ -72,7 +75,8 @@ export default function Login(props) {
                   ""
                 )}
 
-                <button type="submit" class="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Login</button>
+                {loading ? <div class="loading"></div> : <button type="submit" class="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Login</button>}
+
               </div>
 
               <div class="flex justify-between p-8 text-sm border-t border-gray-300 bg-gray-100">

@@ -25,6 +25,8 @@ export default function Signup(props) {
 
   const [errors, setErrors] = useState("");
   const [allPoll, setAllPoll] = useState(null);
+  const [loading, setLoader] = useState(false)
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,11 +36,19 @@ export default function Signup(props) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event) => { 
+    setLoader(true)
     console.log(poll)
     event.preventDefault();
     Axios.post("/poll", { poll })
       .then((response) => {
+        setData({
+          question: "",
+          option_1: "",
+          option_2: "",
+          option_3: "",
+          option_4: "",
+        })
         getAllPoll();
       })
       .catch((error) => console.log("api errors:", error));
@@ -48,11 +58,16 @@ export default function Signup(props) {
     history.push("/");
   };
   const getAllPoll = () => {
+    setLoader(true)
     Axios.post("/poll_list")
       .then((response) => {
         setAllPoll(response.data.polls);
+        setLoader(false)
       })
-      .catch((error) => console.log("api errors:", error));
+      .catch((error) => {
+        console.log("api errors:", error);
+        setLoader(false)
+      });
   };
   useEffect(() => getAllPoll(), []);
   console.log(allPoll);
@@ -67,35 +82,35 @@ export default function Signup(props) {
                 <div class="mb-5">
                   <label for="question" class="block mb-2 text-sm font-medium text-gray-600">Poll Name</label>
 
-                  <input type="text" name="question" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.question}
+                  <input required type="text" name="question" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.question}
                     onChange={handleChange} />
                 </div>
 
                 <div class="mb-4">
                   <label for="option_1" class="block mb-2 text-sm font-medium text-gray-600">Option 1</label>
 
-                  <input type="text" name="option_1" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_1}
+                  <input required type="text" name="option_1" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_1}
                     onChange={handleChange} />
                 </div>
 
                 <div class="mb-4">
                   <label for="option_2" class="block mb-2 text-sm font-medium text-gray-600">Option 2</label>
 
-                  <input type="text" name="option_2" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_2}
+                  <input required type="text" name="option_2" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_2}
                     onChange={handleChange} />
                 </div>
 
                 <div class="mb-4">
                   <label for="option_3" class="block mb-2 text-sm font-medium text-gray-600">Option 3</label>
 
-                  <input type="text" name="option_3" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_3}
+                  <input required type="text" name="option_3" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_3}
                     onChange={handleChange} />
                 </div>
 
                 <div class="mb-4">
                   <label for="option_4" class="block mb-2 text-sm font-medium text-gray-600">Option 4</label>
 
-                  <input type="text" name="option_4" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_4}
+                  <input required type="text" name="option_4" class="block w-full p-3 rounded bg-gray-200 border border-transparent focus:outline-none" value={data.option_4}
                     onChange={handleChange} />
                 </div>
                 {errors ? (
@@ -110,7 +125,7 @@ export default function Signup(props) {
                   ""
                 )}
 
-                <button type="submit" class="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Add</button>
+                {loading ? <div class="loading"></div> : <button type="submit" class="w-full p-3 mt-4 bg-indigo-600 text-white rounded shadow">Add</button>}
               </div>
 
 

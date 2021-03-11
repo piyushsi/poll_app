@@ -1,7 +1,9 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
 
 export default function Header(props) {
+    const history = useHistory();
     const { user, isLoggedIn, handleLogout } = props;
     return <nav className="bg-white py-2 md:py-4">
         <div className="container px-4 mx-auto md:flex md:items-center">
@@ -17,7 +19,7 @@ export default function Header(props) {
                 {isLoggedIn ? (<div>
                     <Link to="/" className="p-2 lg:px-4 md:mx-2 text-white rounded bg-indigo-600">Home</Link>
                     <Link to="/poll" className="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300">Add Poll</Link>
-                    <button onClick={() => handleLogout()}>Logout</button>
+                    <button onClick={() => {handleLogout(); history.push("/"); }}>Logout</button>
                 </div>) : (
                     <div>
                         <Link to="/" className="p-2 lg:px-4 md:mx-2 text-white rounded bg-indigo-600">Home</Link>

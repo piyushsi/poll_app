@@ -8,6 +8,7 @@ export default function SinglePoll(props) {
   const id = +props.match.params[0];
   const [data, setData] = useState(null);
   const [showVotes, setShowVotes] = useState(false)
+  const [loading, setLoader] = useState(false)
 
   useEffect(() => {
     showVote();

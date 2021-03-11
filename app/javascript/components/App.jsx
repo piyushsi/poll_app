@@ -8,6 +8,7 @@ import SinglePoll from '../components/SinglePoll'
 import Axios from "axios";
 import '../css/application.css'
 import Header from './Header'
+import Error from './Error'
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,10 +43,11 @@ export default function App() {
     loginStatus();
   }, []);
 
+
   const data = { handleLogin, handleLogout, user, isLoggedIn };
   console.log(user);
-  return (
-    <Router>
+  if (isLoggedIn) {
+    return <Router>
       <Header {...data} />
       <Switch>
         <Route
@@ -63,17 +65,40 @@ export default function App() {
           path="/poll/*"
           render={(props) => <SinglePoll {...props} {...data} />}
         />
-        <Route
-          exact
-          path="/login"
-          render={(props) => <Login {...props} {...data} />}
-        />
-        <Route
-          exact
-          path="/signup"
-          render={(props) => <Signup {...props} {...data} />}
-        />
+        <Error />
       </Switch>
     </Router>
-  );
+  } else {
+    return (
+      <Router>
+        <Header {...data} />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => <Home {...props} {...data} />}
+          />
+          
+          <Route
+            exact
+            path="/poll/*"
+            render={(props) => <SinglePoll {...props} {...data} />}
+          />
+          <Route
+            exact
+            path="/login"
+            render={(props) => <Login {...props} {...data} />}
+          />
+          <Route
+            exact
+            path="/signup"
+            render={(props) => <Signup {...props} {...data} />}
+          />
+        <Error />
+
+        </Switch>
+      </Router>
+    );
+  }
+
 }
